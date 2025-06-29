@@ -1,0 +1,78 @@
+import pymysql
+import traceback
+
+# host = "127.0.0.1"
+host = "117.72.218.137"
+user = "ll"
+password = "879879"
+database = "ll"  # 数据库名字
+port = 3306
+
+
+def get_conn():
+    """
+    链接数据库
+    :return: 连接，游标
+    """
+    try:
+        # 创建连接
+        conn = pymysql.connect(host=host,
+                               user=user,
+                               password=password,
+                               db=database,
+                               port=port,
+                               connect_timeout=10)  # 添加超时设置方便诊断
+        print("成功连接到数据库")
+        # 创建游标
+        cursor = conn.cursor()  # 执行完毕返回的结果集默认以元组显示
+        return conn, cursor
+    except Exception as e:
+        print(f"连接数据库失败: {e}")
+        return None, None
+
+
+def close_conn(conn, cursor):
+    """
+    关闭链接
+    :param conn:
+    :param cursor:
+    :return:
+    """
+    if cursor:
+        cursor.close()
+    if conn:
+        conn.close()
+        print("数据库连接已关闭")
+
+
+def query(sql, *args):
+    """
+    封装通用查询
+    :param sql:
+    :param args:
+    :return: 返回查询到的结果，((),(),)的形式
+    """
+    conn, cursor = get_conn()
+    cursor.execute(sql, args)
+    res = cursor.fetchall()
+    close_conn(conn, cursor)
+    return res
+
+
+def exec_(sql):
+    cursor = None
+    conn = None
+    try:
+        conn, cursor = get_conn()
+        cursor.execute(sql)
+        conn.commit()  # 提交事务 update delete insert操作
+    except:
+        traceback.print_exc()
+    finally:
+        close_conn(conn, cursor)
+
+
+def main():
+    sql = "select * from student"  # mysql查询语句
+    res = query(sql)
+    # print(res)
