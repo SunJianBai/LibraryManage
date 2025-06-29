@@ -14,21 +14,15 @@ def get_conn():
     链接数据库
     :return: 连接，游标
     """
-    try:
-        # 创建连接
-        conn = pymysql.connect(host=host,
-                               user=user,
-                               password=password,
-                               db=database,
-                               port=port,
-                               connect_timeout=10)  # 添加超时设置方便诊断
-        print("成功连接到数据库")
-        # 创建游标
-        cursor = conn.cursor()  # 执行完毕返回的结果集默认以元组显示
-        return conn, cursor
-    except Exception as e:
-        print(f"连接数据库失败: {e}")
-        return None, None
+    # 创建连接
+    conn = pymysql.connect(host=host,
+                           user=user,
+                           password=password,
+                           db=database,
+                           )
+    # 创建游标
+    cursor = conn.cursor()  # 执行完毕返回的结果集默认以元组显示
+    return conn, cursor
 
 
 def close_conn(conn, cursor):
@@ -42,7 +36,6 @@ def close_conn(conn, cursor):
         cursor.close()
     if conn:
         conn.close()
-        print("数据库连接已关闭")
 
 
 def query(sql, *args):

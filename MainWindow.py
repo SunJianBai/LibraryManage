@@ -123,23 +123,9 @@ class Main(QMainWindow):
 
 
 if __name__ == "__main__":
-    import traceback
-
-    def main():
-        print("开始启动程序...")
-        try:
-            app = QApplication(sys.argv)
-            print("QApplication已创建")
-            app.setWindowIcon(QIcon("./images/MainWindow_1.ico"))
-            print("窗口图标已设置")
-            # app.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
-            main_window = Main()
-            print("主窗口已创建")
-            main_window.show()
-            print("主窗口已显示")
-            sys.exit(app.exec_())
-        except Exception as e:
-            print("发生致命错误:", str(e))
-            traceback.print_exc()
-
-    main()
+    app = QApplication(sys.argv)
+    app.setWindowIcon(QIcon("./images/MainWindow_1.ico"))
+    app.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
+    mainMindow = Main()
+    mainMindow.show()
+    sys.exit(app.exec_())
