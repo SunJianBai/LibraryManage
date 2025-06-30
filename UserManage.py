@@ -105,7 +105,7 @@ class UserManage(QDialog):
 
     def setRows(self):
         font = QFont()
-        font.setPixelSize(14)
+        font.setPixelSize(12)
         for i in range(self.userCount):
             StudentIdItem = QTableWidgetItem(self.query[i][0])
             StudentNameItem = QTableWidgetItem(self.query[i][1])

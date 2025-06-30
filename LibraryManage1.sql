@@ -7,13 +7,10 @@
  源主机           : 127.0.0.1:3306
  源架构         : ll
 
-
-
  目标服务器类型    : MySQL
  目标服务器版本 : 80028 (8.0.28)
  文件编码         : 65001
 
- 日期: 13/06/2023 12:57:28
 */
 use ll;
 SET NAMES utf8mb4;
@@ -23,17 +20,54 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- 表结构 book
 -- ----------------------------
 DROP TABLE IF EXISTS `book`;
-CREATE TABLE `book`  (
-  `BookName` char(30) NOT NULL,
-  `BookId` char(6) NOT NULL,
-  `Auth` char(20) NOT NULL,
-  `Category` char(10) NULL DEFAULT NULL,
-  `Publisher` char(30) NULL DEFAULT NULL,
-  `PublishTime` date NULL DEFAULT NULL,
-  `NumStorage` int NULL DEFAULT 0,
-  `NumCanBorrow` int NULL DEFAULT 0,
-  `NumBorrowed` int NULL DEFAULT 0
-) ENGINE = InnoDB ROW_FORMAT = DYNAMIC;
+CREATE TABLE `book` (
+  `BookName` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `BookId` char(6) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `Auth` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `Category` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `Publisher` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `PublishTime` date DEFAULT NULL,
+  `NumStorage` int DEFAULT 0,
+  `NumCanBorrow` int DEFAULT 0,
+  `NumBorrowed` int DEFAULT 0
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- 表结构 buyordrop
+-- ----------------------------
+DROP TABLE IF EXISTS `buyordrop`;
+CREATE TABLE `buyordrop` (
+  `BookId` char(6) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `Time` date DEFAULT NULL,
+  `BuyOrDrop` bit(1) DEFAULT b'0',
+  `Number` int DEFAULT 0
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- 表结构 user
+-- ----------------------------
+DROP TABLE IF EXISTS `user`;
+CREATE TABLE `user` (
+  `StudentId` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `Name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `Password` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `IsAdmin` int DEFAULT 0,
+  `TimesBorrowed` int DEFAULT 0,
+  `NumBorrowed` int DEFAULT 0,
+  UNIQUE KEY `StudentId` (`StudentId`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- 表结构 user_book
+-- ----------------------------
+DROP TABLE IF EXISTS `user_book`;
+CREATE TABLE `user_book` (
+  `StudentId` char(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `BookId` char(6) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `BorrowTime` date DEFAULT NULL,
+  `ReturnTime` date DEFAULT NULL,
+  `BorrowState` bit(1) DEFAULT b'0'
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- 记录 book
@@ -74,16 +108,7 @@ INSERT INTO `book` VALUES ('线性电子线路', 'IS1034', '陆伟', '教育', '
 INSERT INTO `book` VALUES ('朗道电动力学', 'IS1015', '朗道', '教育', '高等教育出版社', '2012-01-01', 50, 50, 0);
 INSERT INTO `book` VALUES ('亮剑', 'IS1045', '都梁', '军事', '人民出版社', '1998-01-01', 50, 50, 0);
 
--- ----------------------------
--- 表结构 buyordrop
--- ----------------------------
-DROP TABLE IF EXISTS `buyordrop`;
-CREATE TABLE `buyordrop`  (
-  `BookId` char(6) NOT NULL,
-  `Time` date NULL DEFAULT NULL,
-  `BuyOrDrop` bit(1) NULL DEFAULT b'0',
-  `Number` int NULL DEFAULT 0
-) ENGINE = InnoDB ROW_FORMAT = DYNAMIC;
+
 
 -- ----------------------------
 -- 记录 buyordrop
@@ -140,19 +165,6 @@ INSERT INTO `buyordrop` VALUES ('IS1045', '2025-06-08', b'1', 50);
 INSERT INTO `buyordrop` VALUES ('IS1036', '2025-06-08', b'0', 50);
 INSERT INTO `buyordrop` VALUES ('IS1036', '2025-06-08', b'0', 10);
 
--- ----------------------------
--- 表结构 user
--- ----------------------------
-DROP TABLE IF EXISTS `user`;
-CREATE TABLE `user`  (
-  `StudentId` char(20) NOT NULL,
-  `Name` char(20) NULL DEFAULT NULL,
-  `Password` char(32) NOT NULL,
-  `IsAdmin` int NULL DEFAULT 0,
-  `TimesBorrowed` int NULL DEFAULT 0,
-  `NumBorrowed` int NULL DEFAULT 0,
-  UNIQUE INDEX `StudentId`(`StudentId` ASC) USING BTREE
-) ENGINE = InnoDB ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- 记录 user
@@ -161,17 +173,6 @@ INSERT INTO `user` VALUES ('123', '123', 'e10adc3949ba59abbe56e057f20f883e', 1, 
 INSERT INTO `user` VALUES ('1234', '1234', 'e10adc3949ba59abbe56e057f20f883e', 0, 2, 1);
 INSERT INTO `user` VALUES ('12345', '12345', 'e10adc3949ba59abbe56e057f20f883e', 1, 0, 0);
 
--- ----------------------------
--- 表结构 user_book
--- ----------------------------
-DROP TABLE IF EXISTS `user_book`;
-CREATE TABLE `user_book`  (
-  `StudentId` char(10) NOT NULL,
-  `BookId` char(6) NOT NULL,
-  `BorrowTime` date NULL DEFAULT NULL,
-  `ReturnTime` date NULL DEFAULT NULL,
-  `BorrowState` bit(1) NULL DEFAULT b'0'
-) ENGINE = InnoDB ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- 记录 user_book

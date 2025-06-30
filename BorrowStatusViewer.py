@@ -30,7 +30,7 @@ class BorrowStatusViewer(QWidget):
         self.verticalLayout.setObjectName("verticalLayout")
         self.borrowedLabel = QtWidgets.QLabel(self)
         font = QtGui.QFont()
-        font.setPointSize(16)
+        font.setPointSize(13)
         self.borrowedLabel.setFont(font)
         self.borrowedLabel.setObjectName("borrowedLabel")
         self.verticalLayout.addWidget(self.borrowedLabel)
@@ -67,7 +67,7 @@ class BorrowStatusViewer(QWidget):
 
         self.returnedLabel = QtWidgets.QLabel(self)
         font = QtGui.QFont()
-        font.setPointSize(16)
+        font.setPointSize(13)
         self.returnedLabel.setFont(font)
         self.returnedLabel.setObjectName("returnedLabel")
 

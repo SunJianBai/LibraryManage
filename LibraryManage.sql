@@ -1,24 +1,23 @@
 /*
- Navicat Premium Data Transfer
+ Navicat Premium 数据传输
 
- Source Server         : localhost
- Source Server Type    : MySQL
- Source Server Version : 80028 (8.0.28)
- Source Host           : 127.0.0.1:3306
- Source Schema         : ll
+ 源服务器         : localhost
+ 源服务器类型    : MySQL
+ 源服务器版本 : 80028 (8.0.28)
+ 源主机           : 127.0.0.1:3306
+ 源架构         : ll
 
- Target Server Type    : MySQL
- Target Server Version : 80028 (8.0.28)
- File Encoding         : 65001
+ 目标服务器类型    : MySQL
+ 目标服务器版本 : 80028 (8.0.28)
+ 文件编码         : 65001
 
- Date: 13/06/2023 12:57:28
 */
 use ll;
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
--- Table structure for book
+-- 表结构 book
 -- ----------------------------
 DROP TABLE IF EXISTS `book`;
 CREATE TABLE `book`  (
@@ -33,8 +32,46 @@ CREATE TABLE `book`  (
   `NumBorrowed` int NULL DEFAULT 0
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
+
 -- ----------------------------
--- Records of book
+-- 表结构 buyordrop
+-- ----------------------------
+DROP TABLE IF EXISTS `buyordrop`;
+CREATE TABLE `buyordrop`  (
+  `BookId` char(6) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `Time` date NULL DEFAULT NULL,
+  `BuyOrDrop` bit(1) NULL DEFAULT b'0',
+  `Number` int NULL DEFAULT 0
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- 表结构 user
+-- ----------------------------
+DROP TABLE IF EXISTS `user`;
+CREATE TABLE `user`  (
+  `StudentId` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `Name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `Password` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `IsAdmin` int NULL DEFAULT 0,
+  `TimesBorrowed` int NULL DEFAULT 0,
+  `NumBorrowed` int NULL DEFAULT 0,
+  UNIQUE INDEX `StudentId`(`StudentId` ASC) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- 表结构 user_book
+-- ----------------------------
+DROP TABLE IF EXISTS `user_book`;
+CREATE TABLE `user_book`  (
+  `StudentId` char(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `BookId` char(6) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `BorrowTime` date NULL DEFAULT NULL,
+  `ReturnTime` date NULL DEFAULT NULL,
+  `BorrowState` bit(1) NULL DEFAULT b'0'
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- 记录 book
 -- ----------------------------
 INSERT INTO `book` VALUES ('力学', 'IS1000', '刘斌', '教育', '中国科学技术大学 ', '1999-01-01', 34, 32, 3);
 INSERT INTO `book` VALUES ('微积分', 'IS1001', '牛顿莱布尼兹', '教育', '中国科学技术大学', '1998-01-01', 14, 13, 2);
@@ -73,114 +110,80 @@ INSERT INTO `book` VALUES ('朗道电动力学', 'IS1015', '朗道', '教育', '
 INSERT INTO `book` VALUES ('亮剑', 'IS1045', '都梁', '军事', '人民出版社', '1998-01-01', 50, 50, 0);
 
 -- ----------------------------
--- Table structure for buyordrop
+-- 记录 buyordrop
 -- ----------------------------
-DROP TABLE IF EXISTS `buyordrop`;
-CREATE TABLE `buyordrop`  (
-  `BookId` char(6) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `Time` date NULL DEFAULT NULL,
-  `BuyOrDrop` bit(1) NULL DEFAULT b'0',
-  `Number` int NULL DEFAULT 0
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+INSERT INTO `buyordrop` VALUES ('IS1234', '2025-05-18', b'1', 12);
+INSERT INTO `buyordrop` VALUES ('IS1234', '2025-05-21', b'0', 2);
+INSERT INTO `buyordrop` VALUES ('IS1000', '2025-05-22', b'1', 34);
+INSERT INTO `buyordrop` VALUES ('IS1001', '2025-05-22', b'1', 14);
+INSERT INTO `buyordrop` VALUES ('IS1002', '2025-05-22', b'1', 24);
+INSERT INTO `buyordrop` VALUES ('IS1003', '2025-05-22', b'1', 45);
+INSERT INTO `buyordrop` VALUES ('IS1004', '2025-05-22', b'1', 25);
+INSERT INTO `buyordrop` VALUES ('IS1004', '2025-05-27', b'1', 45);
+INSERT INTO `buyordrop` VALUES ('IS1005', '2025-05-27', b'1', 45);
+INSERT INTO `buyordrop` VALUES ('IS1234', '2025-05-28', b'0', 10);
+INSERT INTO `buyordrop` VALUES ('IS1234', '2025-05-28', b'0', 10);
+INSERT INTO `buyordrop` VALUES ('IS1006', '2025-05-28', b'1', 10);
+INSERT INTO `buyordrop` VALUES ('IS1005', '2025-05-28', b'0', 45);
+INSERT INTO `buyordrop` VALUES ('IS1005', '2025-05-28', b'1', 43);
+INSERT INTO `buyordrop` VALUES ('IS1007', '2025-05-28', b'1', 23);
+INSERT INTO `buyordrop` VALUES ('IS1008', '2025-05-28', b'1', 50);
+INSERT INTO `buyordrop` VALUES ('IS1009', '2025-05-28', b'1', 50);
+INSERT INTO `buyordrop` VALUES ('IS1010', '2025-05-28', b'1', 50);
+INSERT INTO `buyordrop` VALUES ('IS1011', '2025-05-28', b'1', 50);
+INSERT INTO `buyordrop` VALUES ('IS1012', '2025-05-28', b'1', 50);
+INSERT INTO `buyordrop` VALUES ('IS1013', '2025-05-28', b'1', 50);
+INSERT INTO `buyordrop` VALUES ('IS1014', '2025-05-28', b'1', 50);
+INSERT INTO `buyordrop` VALUES ('IS1015', '2025-05-28', b'1', 50);
+INSERT INTO `buyordrop` VALUES ('IS1016', '2025-05-28', b'1', 50);
+INSERT INTO `buyordrop` VALUES ('IS1017', '2025-05-28', b'1', 50);
+INSERT INTO `buyordrop` VALUES ('IS1018', '2025-05-28', b'1', 50);
+INSERT INTO `buyordrop` VALUES ('IS1019', '2025-05-28', b'1', 50);
+INSERT INTO `buyordrop` VALUES ('IS1020', '2025-05-28', b'1', 50);
+INSERT INTO `buyordrop` VALUES ('IS1021', '2025-05-28', b'1', 50);
+INSERT INTO `buyordrop` VALUES ('IS1022', '2025-05-28', b'1', 50);
+INSERT INTO `buyordrop` VALUES ('IS1023', '2025-05-28', b'1', 50);
+INSERT INTO `buyordrop` VALUES ('IS1024', '2025-05-28', b'1', 50);
+INSERT INTO `buyordrop` VALUES ('IS1025', '2025-05-28', b'1', 50);
+INSERT INTO `buyordrop` VALUES ('IS1026', '2025-05-28', b'1', 50);
+INSERT INTO `buyordrop` VALUES ('IS1026', '2025-05-28', b'1', 50);
+INSERT INTO `buyordrop` VALUES ('IS1027', '2025-05-28', b'1', 50);
+INSERT INTO `buyordrop` VALUES ('IS1029', '2025-05-28', b'1', 50);
+INSERT INTO `buyordrop` VALUES ('IS1030', '2025-05-28', b'1', 50);
+INSERT INTO `buyordrop` VALUES ('IS1031', '2025-05-28', b'1', 50);
+INSERT INTO `buyordrop` VALUES ('IS1032', '2025-05-28', b'1', 50);
+INSERT INTO `buyordrop` VALUES ('IS1033', '2025-05-28', b'1', 50);
+INSERT INTO `buyordrop` VALUES ('IS1034', '2025-05-28', b'1', 50);
+INSERT INTO `buyordrop` VALUES ('IS1015', '2025-05-28', b'0', 50);
+INSERT INTO `buyordrop` VALUES ('IS1015', '2025-05-28', b'1', 50);
+INSERT INTO `buyordrop` VALUES ('IS1035', '2025-06-06', b'1', 60);
+INSERT INTO `buyordrop` VALUES ('IS1035', '2025-06-06', b'0', 60);
+INSERT INTO `buyordrop` VALUES ('IS1056', '2025-06-06', b'1', 900);
+INSERT INTO `buyordrop` VALUES ('is1056', '2025-06-06', b'0', 900);
+INSERT INTO `buyordrop` VALUES ('IS1045', '2025-06-08', b'1', 50);
+INSERT INTO `buyordrop` VALUES ('IS1036', '2025-06-08', b'0', 50);
+INSERT INTO `buyordrop` VALUES ('IS1036', '2025-06-08', b'0', 10);
+
+
 
 -- ----------------------------
--- Records of buyordrop
--- ----------------------------
-INSERT INTO `buyordrop` VALUES ('IS1234', '2018-04-18', b'1', 12);
-INSERT INTO `buyordrop` VALUES ('IS1234', '2018-04-21', b'0', 2);
-INSERT INTO `buyordrop` VALUES ('IS1000', '2018-04-22', b'1', 34);
-INSERT INTO `buyordrop` VALUES ('IS1001', '2018-04-22', b'1', 14);
-INSERT INTO `buyordrop` VALUES ('IS1002', '2018-04-22', b'1', 24);
-INSERT INTO `buyordrop` VALUES ('IS1003', '2018-04-22', b'1', 45);
-INSERT INTO `buyordrop` VALUES ('IS1004', '2018-04-22', b'1', 25);
-INSERT INTO `buyordrop` VALUES ('IS1004', '2018-04-27', b'1', 45);
-INSERT INTO `buyordrop` VALUES ('IS1005', '2018-04-27', b'1', 45);
-INSERT INTO `buyordrop` VALUES ('IS1234', '2018-04-28', b'0', 10);
-INSERT INTO `buyordrop` VALUES ('IS1234', '2018-04-28', b'0', 10);
-INSERT INTO `buyordrop` VALUES ('IS1006', '2018-04-28', b'1', 10);
-INSERT INTO `buyordrop` VALUES ('IS1005', '2018-04-28', b'0', 45);
-INSERT INTO `buyordrop` VALUES ('IS1005', '2018-04-28', b'1', 43);
-INSERT INTO `buyordrop` VALUES ('IS1007', '2018-04-28', b'1', 23);
-INSERT INTO `buyordrop` VALUES ('IS1008', '2018-04-28', b'1', 50);
-INSERT INTO `buyordrop` VALUES ('IS1009', '2018-04-28', b'1', 50);
-INSERT INTO `buyordrop` VALUES ('IS1010', '2018-04-28', b'1', 50);
-INSERT INTO `buyordrop` VALUES ('IS1011', '2018-04-28', b'1', 50);
-INSERT INTO `buyordrop` VALUES ('IS1012', '2018-04-28', b'1', 50);
-INSERT INTO `buyordrop` VALUES ('IS1013', '2018-04-28', b'1', 50);
-INSERT INTO `buyordrop` VALUES ('IS1014', '2018-04-28', b'1', 50);
-INSERT INTO `buyordrop` VALUES ('IS1015', '2018-04-28', b'1', 50);
-INSERT INTO `buyordrop` VALUES ('IS1016', '2018-04-28', b'1', 50);
-INSERT INTO `buyordrop` VALUES ('IS1017', '2018-04-28', b'1', 50);
-INSERT INTO `buyordrop` VALUES ('IS1018', '2018-04-28', b'1', 50);
-INSERT INTO `buyordrop` VALUES ('IS1019', '2018-04-28', b'1', 50);
-INSERT INTO `buyordrop` VALUES ('IS1020', '2018-04-28', b'1', 50);
-INSERT INTO `buyordrop` VALUES ('IS1021', '2018-04-28', b'1', 50);
-INSERT INTO `buyordrop` VALUES ('IS1022', '2018-04-28', b'1', 50);
-INSERT INTO `buyordrop` VALUES ('IS1023', '2018-04-28', b'1', 50);
-INSERT INTO `buyordrop` VALUES ('IS1024', '2018-04-28', b'1', 50);
-INSERT INTO `buyordrop` VALUES ('IS1025', '2018-04-28', b'1', 50);
-INSERT INTO `buyordrop` VALUES ('IS1026', '2018-04-28', b'1', 50);
-INSERT INTO `buyordrop` VALUES ('IS1026', '2018-04-28', b'1', 50);
-INSERT INTO `buyordrop` VALUES ('IS1027', '2018-04-28', b'1', 50);
-INSERT INTO `buyordrop` VALUES ('IS1029', '2018-04-28', b'1', 50);
-INSERT INTO `buyordrop` VALUES ('IS1030', '2018-04-28', b'1', 50);
-INSERT INTO `buyordrop` VALUES ('IS1031', '2018-04-28', b'1', 50);
-INSERT INTO `buyordrop` VALUES ('IS1032', '2018-04-28', b'1', 50);
-INSERT INTO `buyordrop` VALUES ('IS1033', '2018-04-28', b'1', 50);
-INSERT INTO `buyordrop` VALUES ('IS1034', '2018-04-28', b'1', 50);
-INSERT INTO `buyordrop` VALUES ('IS1015', '2018-04-28', b'0', 50);
-INSERT INTO `buyordrop` VALUES ('IS1015', '2018-04-28', b'1', 50);
-INSERT INTO `buyordrop` VALUES ('IS1035', '2021-05-06', b'1', 60);
-INSERT INTO `buyordrop` VALUES ('IS1035', '2021-05-06', b'0', 60);
-INSERT INTO `buyordrop` VALUES ('IS1056', '2021-05-06', b'1', 900);
-INSERT INTO `buyordrop` VALUES ('is1056', '2021-05-06', b'0', 900);
-INSERT INTO `buyordrop` VALUES ('IS1045', '2021-05-08', b'1', 50);
-INSERT INTO `buyordrop` VALUES ('IS1036', '2021-05-08', b'0', 50);
-INSERT INTO `buyordrop` VALUES ('IS1036', '2021-05-08', b'0', 10);
-
--- ----------------------------
--- Table structure for user
--- ----------------------------
-DROP TABLE IF EXISTS `user`;
-CREATE TABLE `user`  (
-  `StudentId` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `Name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `Password` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `IsAdmin` int NULL DEFAULT 0,
-  `TimesBorrowed` int NULL DEFAULT 0,
-  `NumBorrowed` int NULL DEFAULT 0,
-  UNIQUE INDEX `StudentId`(`StudentId` ASC) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of user
+-- 记录 user
 -- ----------------------------
 INSERT INTO `user` VALUES ('123', '123', 'e10adc3949ba59abbe56e057f20f883e', 1, 0, 0);
 INSERT INTO `user` VALUES ('1234', '1234', 'e10adc3949ba59abbe56e057f20f883e', 0, 2, 1);
 INSERT INTO `user` VALUES ('12345', '12345', 'e10adc3949ba59abbe56e057f20f883e', 1, 0, 0);
 
--- ----------------------------
--- Table structure for user_book
--- ----------------------------
-DROP TABLE IF EXISTS `user_book`;
-CREATE TABLE `user_book`  (
-  `StudentId` char(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `BookId` char(6) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `BorrowTime` date NULL DEFAULT NULL,
-  `ReturnTime` date NULL DEFAULT NULL,
-  `BorrowState` bit(1) NULL DEFAULT b'0'
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
--- Records of user_book
+-- 记录 user_book
 -- ----------------------------
-INSERT INTO `user_book` VALUES ('PB15000135', 'IS1000', '2018-04-28', '2018-04-28', b'0');
-INSERT INTO `user_book` VALUES ('PB15000135', 'IS1027', '2018-04-28', NULL, b'1');
-INSERT INTO `user_book` VALUES ('PB15000135', 'IS1011', '2018-04-28', NULL, b'1');
-INSERT INTO `user_book` VALUES ('PB15000135', 'IS1014', '2018-04-28', NULL, b'1');
-INSERT INTO `user_book` VALUES ('PB15000135', 'IS1000', '2021-05-06', NULL, b'1');
-INSERT INTO `user_book` VALUES ('PB15000135', 'IS1001', '2021-05-06', NULL, b'1');
-INSERT INTO `user_book` VALUES ('1234', 'IS1000', '2021-05-08', NULL, b'1');
-INSERT INTO `user_book` VALUES ('1234', 'IS1001', '2021-05-08', '2021-05-08', b'0');
+INSERT INTO `user_book` VALUES ('PB15000135', 'IS1000', '2025-04-28', '2025-04-28', b'0');
+INSERT INTO `user_book` VALUES ('PB15000135', 'IS1027', '2025-04-28', NULL, b'1');
+INSERT INTO `user_book` VALUES ('PB15000135', 'IS1011', '2025-04-28', NULL, b'1');
+INSERT INTO `user_book` VALUES ('PB15000135', 'IS1014', '2025-04-28', NULL, b'1');
+INSERT INTO `user_book` VALUES ('PB15000135', 'IS1000', '2025-05-06', NULL, b'1');
+INSERT INTO `user_book` VALUES ('PB15000135', 'IS1001', '2025-05-06', NULL, b'1');
+INSERT INTO `user_book` VALUES ('1234', 'IS1000', '2025-05-08', NULL, b'1');
+INSERT INTO `user_book` VALUES ('1234', 'IS1001', '2025-05-08', '2025-05-08', b'0');
 
 SET FOREIGN_KEY_CHECKS = 1;
