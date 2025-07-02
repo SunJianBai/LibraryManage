@@ -1,16 +1,9 @@
 /*
- Navicat Premium 数据传输
-
  源服务器         : localhost
  源服务器类型    : MySQL
  源服务器版本 : 80028 (8.0.28)
  源主机           : 127.0.0.1:3306
  源架构         : ll
-
- 目标服务器类型    : MySQL
- 目标服务器版本 : 80028 (8.0.28)
- 文件编码         : 65001
-
 */
 use ll;
 SET NAMES utf8mb4;
@@ -70,6 +63,9 @@ CREATE TABLE `user_book`  (
   `BorrowState` bit(1) NULL DEFAULT b'0'
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
+DROP TRIGGER IF EXISTS `after_borrow_book`;
+DROP TRIGGER IF EXISTS `after_return_book`;
+DROP TRIGGER IF EXISTS `after_buy_or_drop_book`;
 -- ----------------------------
 -- 记录 book
 -- ----------------------------
